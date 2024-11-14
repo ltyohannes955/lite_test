@@ -20,7 +20,12 @@ const Orders = () => {
   const [destinationLat, setDestinationLat] = useState("");
   const [destinationLon, setDestinationLon] = useState("");
   const [price, setPrice] = useState();
-  const userId = localStorage.getItem("userId");
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userId");
+    }
+    return null; // default value for SSR
+  });
   const [formData, setFormData] = useState({
     user_id: userId,
     driver_id: 2,
