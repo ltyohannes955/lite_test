@@ -39,10 +39,6 @@ const SignUp = () => {
       [name]: value,
     }));
   };
-  const handleSignU = async (e: any) => {
-    e.preventDefault();
-    console.log(formData);
-  };
 
   const handleSignUp = async (e: any) => {
     e.preventDefault();
@@ -73,11 +69,9 @@ const SignUp = () => {
     }
   };
 
-  const color = true;
-
   return (
     <>
-      <Header color={color} />
+      <Header />
 
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex max-w-4xl w-full">
