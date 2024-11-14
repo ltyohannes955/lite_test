@@ -1,11 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../Footer/page";
 import { VscAccount } from "react-icons/vsc";
 import Link from "next/link";
 
 const Landing = () => {
-  const userid = localStorage.getItem("userId");
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userId");
+    }
+    return null; // default value for SSR
+  });
   return (
     <>
       <div className="h-[500px] w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#5C1B96] via-[#5D4792] via-[#5E7E8C] via-[#7B549A] via-[#9E21AA] via-[#A5139C] to-[#C825B8]">
