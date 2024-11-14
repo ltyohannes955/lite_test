@@ -26,14 +26,14 @@ const Landing = () => {
               {" "}
               <p>About</p>
             </Link>
-            {userid !== null ? (
+            {userId !== null ? (
               <Link href={"/Dashboard"}>
                 {" "}
                 <p>Dashboard</p>
               </Link>
             ) : null}
           </div>
-          {userid === null ? (
+          {userId === null ? (
             <button
               className="text-white border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-purple-600 transition"
               onClick={() => (window.location.href = "/signup")}
