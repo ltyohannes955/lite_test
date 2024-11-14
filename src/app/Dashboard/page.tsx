@@ -28,7 +28,7 @@ const Orders = () => {
   });
   const [formData, setFormData] = useState({
     user_id: userId,
-    driver_id: 2,
+    driver_id: "",
     status: "pending",
     origin: `${originLat},${originLon}`,
     destination: `${destinationLat},${destinationLon}`,
@@ -153,10 +153,10 @@ const Orders = () => {
       );
       const data = await response.json();
       // console.log(data);
-      setPrice(data.payload);
+      setPrice(data.payload.total_price);
       setFormData((prevData) => ({
         ...prevData,
-        price: data.payload,
+        price: data.payload.total_price,
       }));
     } catch (error) {
       console.error("Failed to fetch price", error);

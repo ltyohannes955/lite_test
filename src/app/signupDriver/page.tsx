@@ -13,11 +13,20 @@ const SignUp = () => {
     last_name: "",
     phone_number: "",
     email: "",
-    password_digest: "",
-    business_name: "",
+    password: "",
+    business_name: "liyt",
     business_email: "",
     vehicle_type: "",
-    license_plate: "",
+    license_plate_number: "",
+    is_driver: true,
+    primary_address: {
+      latitude: null as number | null,
+      longitude: null as number | null,
+    },
+    secondary_address: {
+      latitude: null as number | null,
+      longitude: null as number | null,
+    },
   });
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -30,22 +39,26 @@ const SignUp = () => {
       [name]: value,
     }));
   };
+  const handleSignU = async (e: any) => {
+    e.preventDefault();
+    console.log(formData);
+  };
 
   const handleSignUp = async (e: any) => {
     e.preventDefault();
 
-    if (formData.password_digest !== confirmPassword) {
+    if (formData.password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
     try {
-      const response = await fetch("https://liyt-api-1.onrender.com/users", {
+      const response = await fetch("https://liyt-api-1.onrender.com/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ user: formData }),
       });
 
       if (response.ok) {
@@ -53,15 +66,18 @@ const SignUp = () => {
       } else {
         const errorData = await response.json();
         alert(errorData.message || "Sign-up failed");
+        console.log(formData);
       }
     } catch (error) {
       alert(`${error}An error occurred. Please try again.`);
     }
   };
 
+  const color = true;
+
   return (
     <>
-      <Header />
+      <Header color={color} />
 
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex max-w-4xl w-full">
@@ -127,10 +143,10 @@ const SignUp = () => {
                   <div className="relative mb-4 w-1/2">
                     <input
                       type={isPasswordVisible ? "text" : "password"}
-                      name="password_digest"
+                      name="password"
                       placeholder="Password"
                       className="w-full p-3 border border-gray-300 rounded-md"
-                      value={formData.password_digest}
+                      value={formData.password}
                       onChange={handleChange}
                       required
                     />
@@ -175,10 +191,10 @@ const SignUp = () => {
                 </select>
                 <input
                   type="text"
-                  name="license_plate"
+                  name="license_plate_number"
                   placeholder="License Plate"
                   className="w-full p-3 border border-gray-300 rounded-md"
-                  value={formData.license_plate}
+                  value={formData.license_plate_number}
                   onChange={handleChange}
                   required
                 />
