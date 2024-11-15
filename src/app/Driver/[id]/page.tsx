@@ -6,11 +6,24 @@ import "leaflet/dist/leaflet.css";
 import { FaPhone } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import L from "leaflet";
 
 const JobDetails = () => {
   const params = useParams(); // Dynamically access `params`
   const { id } = params; // Access the `id` from `params`
 
+  const markerIcon = new L.Icon({
+    iconUrl: "/location.svg",
+    iconSize: [40, 40],
+    iconAnchor: [17, 46], //[left/right, top/bottom]
+    popupAnchor: [0, -46], //[left/right, top/bottom]
+  });
+  const originIcon = new L.Icon({
+    iconUrl: "/bluelocation.svg",
+    iconSize: [40, 40],
+    iconAnchor: [17, 46], //[left/right, top/bottom]
+    popupAnchor: [0, -46], //[left/right, top/bottom]
+  });
   const [jobDetails, setJobDetails] = useState<{
     origin: string | undefined;
     destination: string | undefined;
@@ -122,10 +135,10 @@ const JobDetails = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           
-          <Marker position={validOriginLatLng as [number, number]}>
+          <Marker icon={originIcon} position={validOriginLatLng as [number, number]}>
             <Popup>Origin</Popup>
           </Marker>
-          <Marker position={validDestinationLatLng as [number, number]}>
+          <Marker icon={markerIcon} position={validDestinationLatLng as [number, number]}>
             <Popup>Destination</Popup>
           </Marker>
 
