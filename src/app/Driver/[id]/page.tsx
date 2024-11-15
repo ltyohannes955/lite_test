@@ -1,16 +1,27 @@
 'use client';
 import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation"; // For accessing params dynamically
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { FaPhone } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
-const JobDetails = ({ params }) => {
-  const { id } = React.use(params);
+const JobDetails = () => {
+  const params = useParams(); // Dynamically access `params`
+  const { id } = params; // Access the `id` from `params`
 
-  const [jobDetails, setJobDetails] = useState(null);
-  const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [jobDetails, setJobDetails] = useState<{
+    origin: string | undefined;
+    destination: string | undefined;
+    price: number;
+    status: string;
+    itemDescription: string;
+    customer_name: string;
+    customer_phone_number: string;
+    user: { first_name: string; last_name: string; phone_number: string };
+  } | null>(null); // Explicitly type jobDetails
+  const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -26,19 +37,28 @@ const JobDetails = ({ params }) => {
         })
         .then(data => {
           setJobDetails(data);
-          fetchRoute(data.origin, data.destination); // Fetch route after getting job details
+
+          // Ensure origin and destination have default values if not provided
+          const origin = data.origin || "0,0"; // Default to "0,0" if not available
+          const destination = data.destination || "0,0"; // Default to "0,0" if not available
+          
+          fetchRoute(origin, destination); // Fetch route after getting job details
         })
         .catch(error => console.error("Error fetching job details:", error));
     }
   }, [id]);
 
-  const fetchRoute = async (origin, destination) => {
+  const fetchRoute = async (origin: string, destination: string) => {
     if (origin && destination) {
-      const response = await fetch(
-        `https://liyt-api-1.onrender.com/orders/get_price?origin=${origin}&destination=${destination}`
-      );
-      const data = await response.json();
-      setRouteCoordinates(data.payload.directions);
+      try {
+        const response = await fetch(
+          `https://liyt-api-1.onrender.com/orders/get_price?origin=${origin}&destination=${destination}`
+        );
+        const data = await response.json();
+        setRouteCoordinates(data.payload.directions);
+      } catch (error) {
+        console.error("Error fetching route:", error);
+      }
     }
   };
 
@@ -57,7 +77,7 @@ const JobDetails = ({ params }) => {
     user: sender,
   } = jobDetails;
 
-  const isValidCoordinate = (lat, lon) => {
+  const isValidCoordinate = (lat: number, lon: number): boolean => {
     return (
       typeof lat === "number" &&
       typeof lon === "number" &&
@@ -66,17 +86,19 @@ const JobDetails = ({ params }) => {
     );
   };
 
-  const originLatLng = origin
-    ? origin.split(',').map(coord => parseFloat(coord))
+  // Set default coordinates if origin and destination are not provided
+  const originLatLng: [number, number] = origin && typeof origin === "string"
+    ? origin.split(',').map(coord => parseFloat(coord)) as [number, number]
     : [9.04, 38.75];
-  const destinationLatLng = destination
-    ? destination.split(',').map(coord => parseFloat(coord))
+  const destinationLatLng: [number, number] = destination
+    ? destination.split(',').map(coord => parseFloat(coord)) as [number, number]
     : [9.04, 38.75];
 
+  // Validate coordinates, and fallback to default if invalid
   const validOriginLatLng = isValidCoordinate(originLatLng[0], originLatLng[1]) ? originLatLng : [9.04, 38.75];
   const validDestinationLatLng = isValidCoordinate(destinationLatLng[0], destinationLatLng[1]) ? destinationLatLng : [9.04, 38.75];
 
-  const centerLatLng = [
+  const centerLatLng: [number, number] = [
     (validOriginLatLng[0] + validDestinationLatLng[0]) / 2,
     (validOriginLatLng[1] + validDestinationLatLng[1]) / 2
   ];
@@ -100,10 +122,10 @@ const JobDetails = ({ params }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           
-          <Marker position={validOriginLatLng}>
+          <Marker position={validOriginLatLng as [number, number]}>
             <Popup>Origin</Popup>
           </Marker>
-          <Marker position={validDestinationLatLng}>
+          <Marker position={validDestinationLatLng as [number, number]}>
             <Popup>Destination</Popup>
           </Marker>
 

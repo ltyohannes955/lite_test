@@ -6,11 +6,11 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 
 const Orders = () => {
   const [activeTab, setActiveTab] = useState("All");
-  const [expandedCard, setExpandedCard] = useState(null);
-  const [orders, setOrders] = useState([]);
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [orders, setOrders] = useState<{ id: number; item: string; origin: string; destination: string; price: number; status: string; customer_name: string; customer_phone: string; }[]>([]);
   const router = useRouter(); // Initialize router
 
-  const mapApiStatusToUiStatus = (apiStatus) => {
+  const mapApiStatusToUiStatus = (apiStatus: string) => {
     switch (apiStatus) {
       case "pending":
         return "Available";
@@ -28,7 +28,7 @@ const Orders = () => {
       try {
         const response = await fetch("https://liyt-api-1.onrender.com/orders");
         const data = await response.json();
-        const formattedOrders = data.map((order) => ({
+        const formattedOrders = data.map((order: { id: number; origin: string; destination: string; price: number; status: string; customer_name: string; customer_phone_number: string; }) => ({
           id: order.id,
           item: `Job #${order.id}`,
           origin: order.origin,
@@ -47,15 +47,15 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
-  const handleCardClick = (id) => {
+  const handleCardClick = (id: number) => {
     setExpandedCard(expandedCard === id ? null : id);
   };
 
-  const handleAcceptJob = async (orderId) => {
+  const handleAcceptJob = async (orderId: number) => {
     try {
       await fetch(`/api/orders/${orderId}/accept`, { method: "POST" });
       setOrders((prevOrders) =>
