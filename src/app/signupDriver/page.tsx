@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Header from "../Header/page";
 import { IoEyeSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
@@ -71,7 +70,6 @@ const SignUp = () => {
 
   return (
     <>
-      <Header />
 
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex max-w-4xl w-full">
@@ -92,7 +90,7 @@ const SignUp = () => {
           </div>
 
           <div className="w-2/3 p-10">
-            <h2 className="text-3xl font-bold mb-6">User Info</h2>
+            <h2 className="text-3xl font-bold mb-6">Driver Info</h2>
             <form className="space-y-2" onSubmit={handleSignUp}>
               <>
                 <div className="flex gap-4">
