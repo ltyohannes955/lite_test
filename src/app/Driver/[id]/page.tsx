@@ -165,16 +165,16 @@ const JobDetails = () => {
               <div>
                 <p className="font-bold">Sender</p>
                 <p>{sender.first_name} {sender.last_name}</p>
-                <button className="flex items-center text-blue-500 mt-1">
-                  <FaPhone className="mr-1" /> {sender.phone_number}
-                </button>
+                <a href={`tel:${sender.phone_number}`} className="flex items-center text-blue-500 mt-1">
+  <FaPhone className="mr-1" /> {sender.phone_number}
+</a>
               </div>
               <div>
                 <p className="font-bold">Receiver</p>
                 <p>{customer_name}</p>
-                <button className="flex items-center text-blue-500 mt-1">
-                  <FaPhone className="mr-1" /> {customer_phone_number}
-                </button>
+                <a href={`tel:${customer_phone_number}`} className="flex items-center text-blue-500 mt-1">
+  <FaPhone className="mr-1" /> {customer_phone_number}
+</a>
               </div>
             </div>
 
