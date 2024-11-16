@@ -14,7 +14,7 @@ const Orders = () => {
     switch (apiStatus) {
       case "pending":
         return "Available";
-      case "delivering":
+      case "in_progress":
         return "Delivering";
       case "completed":
         return "Completed";
@@ -23,6 +23,15 @@ const Orders = () => {
     }
   };
 
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userId");
+    }
+    return null; // default value for SSR
+  });
+
+
+  
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -47,6 +56,7 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+ 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
@@ -57,12 +67,7 @@ const Orders = () => {
 
   const handleAcceptJob = async (orderId: number) => {
     try {
-      await fetch(`/api/orders/${orderId}/accept`, { method: "POST" });
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: "Delivering" } : order
-        )
-      );
+      await fetch(`https://liyt-api-1.onrender.com/orders/${orderId}/accept/${userId}`, { method: "GET" });
 
       // Navigate to JobDetails page with the order ID
       router.push(`/Driver/${orderId}`);
