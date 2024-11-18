@@ -45,7 +45,7 @@ const Orders = () => {
     console.log("User ID:", userId); // Log the userId to the console
     const fetchOrders = async () => {
       try {
-        const response = await fetch("https://liyt-api-1.onrender.com/orders");
+        const response = await fetch("http://liytapi.fenads.org/orders");
         const data = await response.json();
         const formattedOrders = data.map(
           (order: {
@@ -87,7 +87,7 @@ const Orders = () => {
   const handleAcceptJob = async (orderId: number) => {
     try {
       await fetch(
-        `https://liyt-api-1.onrender.com/orders/${orderId}/accept/${userId}`,
+        `http://liytapi.fenads.org/orders/${orderId}/accept/${userId}`,
         { method: "GET" }
       );
 

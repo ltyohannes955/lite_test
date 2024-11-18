@@ -60,7 +60,7 @@ const Orders = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://liyt-api-1.onrender.com/orders");
+      const response = await fetch("http://liytapi.fenads.org/orders");
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
@@ -80,7 +80,7 @@ const Orders = () => {
   const fetchLocationSuggestions = async (query: string, type: string) => {
     try {
       const response = await fetch(
-        `https://liyt-api-1.onrender.com/location/${query}`
+        `http://liytapi.fenads.org/location/${query}`
       );
       const data = await response.json();
       if (type === "primary") {
@@ -111,7 +111,7 @@ const Orders = () => {
     if (origin && destination) {
       try {
         const response = await fetch(
-          `https://liyt-api-1.onrender.com/orders/get_price?origin=${origin}&destination=${destination}`
+          `http://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
         );
         const data = await response.json();
         setRouteCoordinates(data.payload.directions);
@@ -123,7 +123,7 @@ const Orders = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("https://liyt-api-1.onrender.com/orders", {
+      const response = await fetch("http://liytapi.fenads.org/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +178,7 @@ const Orders = () => {
   ) => {
     try {
       const response = await fetch(
-        `https://liyt-api-1.onrender.com/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
+        `http://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
       );
       const data = await response.json();
       setPrice(data.payload.total_price);

@@ -48,7 +48,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch("https://liyt-api-1.onrender.com/signup", {
+      const response = await fetch("http://liytapi.fenads.org/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,6 @@ const SignUp = () => {
 
   return (
     <>
-
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden flex max-w-4xl w-full">
           <div className="pt-10 w-1/2 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 p-10 text-white flex flex-col justify-center">

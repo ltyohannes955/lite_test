@@ -37,7 +37,7 @@ const SignUp = () => {
   const fetchLocationSuggestions = async (query: any, type: any) => {
     try {
       const response = await fetch(
-        `https://liyt-api-1.onrender.com/location/${query}`
+        `http://liytapi.fenads.org/location/${query}`
       );
       const data = await response.json();
       if (type === "primary") {
@@ -86,7 +86,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch("https://liyt-api-1.onrender.com/signup", {
+      const response = await fetch("http://liytapi.fenads.org/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
