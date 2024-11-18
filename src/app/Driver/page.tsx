@@ -7,7 +7,18 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 const Orders = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
-  const [orders, setOrders] = useState<{ id: number; item: string; origin: string; destination: string; price: number; status: string; customer_name: string; customer_phone: string; }[]>([]);
+  const [orders, setOrders] = useState<
+    {
+      id: number;
+      item: string;
+      origin: string;
+      destination: string;
+      price: number;
+      status: string;
+      customer_name: string;
+      customer_phone: string;
+    }[]
+  >([]);
   const router = useRouter(); // Initialize router
 
   const mapApiStatusToUiStatus = (apiStatus: string) => {
@@ -36,16 +47,26 @@ const Orders = () => {
       try {
         const response = await fetch("https://liyt-api-1.onrender.com/orders");
         const data = await response.json();
-        const formattedOrders = data.map((order: { id: number; origin: string; destination: string; price: number; status: string; customer_name: string; customer_phone_number: string; }) => ({
-          id: order.id,
-          item: `Job #${order.id}`,
-          origin: order.origin,
-          destination: order.destination,
-          price: order.price,
-          status: mapApiStatusToUiStatus(order.status),
-          customer_name: order.customer_name,
-          customer_phone: order.customer_phone_number,
-        }));
+        const formattedOrders = data.map(
+          (order: {
+            id: number;
+            origin: string;
+            destination: string;
+            price: number;
+            status: string;
+            customer_name: string;
+            customer_phone_number: string;
+          }) => ({
+            id: order.id,
+            item: `Job #${order.id}`,
+            origin: order.origin,
+            destination: order.destination,
+            price: order.price,
+            status: mapApiStatusToUiStatus(order.status),
+            customer_name: order.customer_name,
+            customer_phone: order.customer_phone_number,
+          })
+        );
         setOrders(formattedOrders);
       } catch (error) {
         console.error("Failed to fetch orders:", error);
@@ -65,7 +86,10 @@ const Orders = () => {
 
   const handleAcceptJob = async (orderId: number) => {
     try {
-      await fetch(`https://liyt-api-1.onrender.com/orders/${orderId}/accept/${userId}`, { method: "GET" });
+      await fetch(
+        `https://liyt-api-1.onrender.com/orders/${orderId}/accept/${userId}`,
+        { method: "GET" }
+      );
 
       // Navigate to JobDetails page with the order ID
       router.push(`/Driver/${orderId}`);
@@ -145,9 +169,7 @@ const Orders = () => {
                   </div>
                   <div className="flex items-center space-x-2 mt-1">
                     <FaMapMarkerAlt className="text-blue-500" />
-                    <p className="text-sm text-gray-700">
-                      {order.destination}
-                    </p>
+                    <p className="text-sm text-gray-700">{order.destination}</p>
                   </div>
                   {order.status === "Available" ? (
                     <button
