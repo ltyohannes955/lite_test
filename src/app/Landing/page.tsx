@@ -26,7 +26,7 @@ const Landing = () => {
       >
         {/* Header */}
         <div className="w-full flex justify-between items-center px-4 sm:px-8 absolute top-0 h-16">
-          <p className="text-white font-[Jaro] text-lg">LIYT</p>
+        <img src="img/logo.png" alt="LIYT Logo" className="h-10" />
           <div className="flex space-x-4 text-white text-sm sm:text-base">
             <Link href={"/Landing"}>
               <p>Home</p>
