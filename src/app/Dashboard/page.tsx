@@ -204,7 +204,7 @@ const Orders = () => {
       <Header />
       <div className="bg-white w-full h-screen">
         <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 w-full">
             <h1 className="text-2xl font-bold">Orders Details</h1>
 
             <button
@@ -216,7 +216,7 @@ const Orders = () => {
           </div>
 
           <div className="flex space-x-6 mb-4 border-b">
-            {["All Order", "Completed", "Delivered", "Pending"].map((tab) => (
+            {["All Order", "Pending", "In Progress", "Delivered"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => handleTabClick(tab)}
@@ -234,6 +234,7 @@ const Orders = () => {
           {loading ? (
             <div className="flex justify-center items-center w-full h-screen">
               <Image
+                className="pb-96"
                 src="/img/liyt.gif"
                 alt="Loading"
                 width={100}
@@ -244,17 +245,15 @@ const Orders = () => {
             <p className="text-red-500">{error}</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border">
+              <table className="min-w-full bg-white border hidden sm:table">
                 <thead>
                   <tr className="text-gray-800">
                     <th className="px-4 py-2 text-left border-b">Order ID</th>
                     <th className="px-4 py-2 text-left border-b">Customer</th>
                     <th className="px-4 py-2 text-left border-b">Origin</th>
-
                     <th className="px-4 py-2 text-left border-b">
                       Destination
                     </th>
-
                     <th className="px-4 py-2 text-left border-b">Date</th>
                     <th className="px-4 py-2 text-left border-b">Status</th>
                   </tr>
@@ -284,6 +283,46 @@ const Orders = () => {
                   ))}
                 </tbody>
               </table>
+
+              {/* Responsive Design for Small Screens */}
+              <div className="sm:hidden">
+                {filteredOrders.map((order: any) => (
+                  <div
+                    key={order.id}
+                    className="border rounded-lg mb-4 bg-white p-4 shadow"
+                  >
+                    <p className="text-gray-800">
+                      <strong>Order ID:</strong> {order.id}
+                    </p>
+                    <p className="text-gray-800">
+                      <strong>Customer:</strong> {order.customer_name}
+                    </p>
+                    <p className="text-gray-800">
+                      <strong>Origin:</strong> {order.origin}
+                    </p>
+                    <p className="text-gray-800">
+                      <strong>Destination:</strong> {order.destination}
+                    </p>
+                    <p className="text-gray-800">
+                      <strong>Date:</strong> {order.date || "N/A"}
+                    </p>
+                    <p className="text-gray-800">
+                      <strong>Status:</strong>{" "}
+                      <span
+                        className={`px-3 py-1 rounded-full text-white text-sm ${
+                          order.status === "Pending"
+                            ? "bg-purple-200 text-purple-800"
+                            : order.status === "Delivering"
+                            ? "bg-blue-200 text-blue-800"
+                            : "bg-green-200 text-green-800"
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
