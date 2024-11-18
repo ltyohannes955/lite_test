@@ -4,6 +4,7 @@ import Header from "../Header/page";
 import dynamic from "next/dynamic";
 import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
+import Footer from "../Footer/page";
 
 const Map = dynamic(() => import("../map"), { ssr: false });
 
@@ -122,51 +123,29 @@ const Orders = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      const response = await fetch("http://liytapi.fenads.org/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setIsModalOpen(false);
-        await fetchOrders();
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Failed to create order");
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-      console.error("Order creation error:", error);
-    }
-  };
-
-  const handleLocationSelect = (
-    location: any,
-    type: "primary" | "secondary"
-  ) => {
-    const { latitude, longitude, name } = location;
-    if (type === "primary") {
-      setPickUpInput(name);
-      setPickUp([]);
-      setOriginLat(latitude);
-      setOriginLon(longitude);
-      setFormData((prevData) => ({
-        ...prevData,
-        origin: `${latitude},${longitude}`,
-      }));
+    if (price === null) {
+      alert("Please calculate the price first.");
     } else {
-      setDropOffInput(name);
-      setDropOff([]);
-      setDestinationLat(latitude);
-      setDestinationLon(longitude);
-      setFormData((prevData) => ({
-        ...prevData,
-        destination: `${latitude},${longitude}`,
-      }));
+      try {
+        const response = await fetch("http://liytapi.fenads.org/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          setIsModalOpen(false);
+          await fetchOrders();
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Failed to create order");
+        }
+      } catch (error) {
+        setError("An error occurred. Please try again.");
+        console.error("Order creation error:", error);
+      }
     }
   };
 
@@ -192,6 +171,43 @@ const Orders = () => {
       }));
     } catch (error) {
       console.error("Failed to fetch price", error);
+    }
+  };
+
+  const handleLocationSelect = (
+    location: any,
+    type: "primary" | "secondary"
+  ) => {
+    const { latitude, longitude, name } = location;
+    if (type === "primary") {
+      setPickUpInput(name);
+      setPickUp([]);
+      setOriginLat(latitude);
+      setOriginLon(longitude);
+      if (destinationLat && destinationLon) {
+        handlePriceCalculation(
+          latitude,
+          longitude,
+          destinationLat,
+          destinationLon
+        );
+      }
+      setFormData((prevData) => ({
+        ...prevData,
+        origin: `${latitude},${longitude}`,
+      }));
+    } else {
+      setDropOffInput(name);
+      setDropOff([]);
+      setDestinationLat(latitude);
+      setDestinationLon(longitude);
+      if (originLat && originLon) {
+        handlePriceCalculation(originLat, originLon, latitude, longitude);
+      }
+      setFormData((prevData) => ({
+        ...prevData,
+        destination: `${latitude},${longitude}`,
+      }));
     }
   };
 
@@ -254,7 +270,6 @@ const Orders = () => {
                     <th className="px-4 py-2 text-left border-b">
                       Destination
                     </th>
-                    <th className="px-4 py-2 text-left border-b">Date</th>
                     <th className="px-4 py-2 text-left border-b">Status</th>
                   </tr>
                 </thead>
@@ -265,13 +280,12 @@ const Orders = () => {
                       <td className="px-4 py-2">{order.customer_name}</td>
                       <td className="px-4 py-2">{order.origin}</td>
                       <td className="px-4 py-2">{order.destination}</td>
-                      <td className="px-4 py-2">{order.date || "N/A"}</td>
                       <td className="px-4 py-2">
                         <span
                           className={`px-3 py-1 rounded-full text-white text-sm ${
-                            order.status === "Pending"
+                            order.status === "pending"
                               ? "bg-purple-200 text-purple-800"
-                              : order.status === "Delivering"
+                              : order.status === "delivered"
                               ? "bg-blue-200 text-blue-800"
                               : "bg-green-200 text-green-800"
                           }`}
@@ -304,15 +318,12 @@ const Orders = () => {
                       <strong>Destination:</strong> {order.destination}
                     </p>
                     <p className="text-gray-800">
-                      <strong>Date:</strong> {order.date || "N/A"}
-                    </p>
-                    <p className="text-gray-800">
                       <strong>Status:</strong>{" "}
                       <span
                         className={`px-3 py-1 rounded-full text-white text-sm ${
-                          order.status === "Pending"
+                          order.status === "pending"
                             ? "bg-purple-200 text-purple-800"
-                            : order.status === "Delivering"
+                            : order.status === "delivered"
                             ? "bg-blue-200 text-blue-800"
                             : "bg-green-200 text-green-800"
                         }`}
@@ -460,21 +471,6 @@ const Orders = () => {
                           )}
                         </div>
                         <div className="flex justify-between w-full mt-4">
-                          <button
-                            type="button" // Ensures this button doesn’t submit the form
-                            onClick={(e) => {
-                              e.preventDefault(); // Prevents form submission behavior
-                              handlePriceCalculation(
-                                originLat,
-                                originLon,
-                                destinationLat,
-                                destinationLon
-                              );
-                            }}
-                            className="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded"
-                          >
-                            Calculate Price
-                          </button>
                           <div>Price: {price ? `${price}birr` : "N/A"}</div>
                         </div>
                       </div>
@@ -505,6 +501,7 @@ const Orders = () => {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 };

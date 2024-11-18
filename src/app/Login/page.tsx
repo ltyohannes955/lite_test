@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -52,16 +53,28 @@ const Login = () => {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden flex max-w-4xl w-full">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row max-w-4xl w-full"
+        >
           {/* Left Side */}
-          <div className="w-1/2 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 p-10 text-white flex flex-col justify-between">
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="w-full md:w-1/2 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 p-10 text-white flex flex-col justify-between"
+          >
             <div>
               <h1 className="text-4xl font-bold mb-2">LIYT</h1>
               <h2 className="text-2xl font-semibold mb-4">
                 Revolutionize Your Delivery System
               </h2>
-              <p className="text-lg">Revolutionize Your Delivery System</p>
+              <p className="text-lg">
+                Experience the future of delivery today.
+              </p>
             </div>
             <div className="mt-10">
               <p className="text-lg">Do not have an account?</p>
@@ -72,40 +85,73 @@ const Login = () => {
                 Sign up here
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Side - Login Form */}
-          <div className="w-1/2 p-10 flex flex-col items-center justify-center">
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="w-full md:w-1/2 p-10 flex flex-col items-center justify-center bg-white"
+          >
             <h2 className="text-3xl font-bold mb-6">Login</h2>
             {error && <p className="text-red-500 mb-4">{error}</p>}
-            <form className="space-y-4 w-full" onSubmit={handleLogin}>
-              <input
+            <motion.form
+              className="space-y-4 w-full max-w-sm"
+              onSubmit={handleLogin}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delayChildren: 0.3,
+                    staggerChildren: 0.2,
+                  },
+                },
+              }}
+            >
+              <motion.input
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
                 type="email"
                 name="email"
                 placeholder="Email"
-                className="w-full p-3 border border-gray-300 rounded-md"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
-              <input
+              <motion.input
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
                 type="password"
                 name="password"
                 placeholder="Password"
-                className="w-full p-3 border border-gray-300 rounded-md"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
-              <button
+              <motion.button
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
                 type="submit"
-                className="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-md font-semibold"
+                className="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-md font-semibold transition"
               >
                 Login
-              </button>
-            </form>
-          </div>
-        </div>
+              </motion.button>
+            </motion.form>
+          </motion.div>
+        </motion.div>
       </div>
     </>
   );

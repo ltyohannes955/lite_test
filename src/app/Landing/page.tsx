@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Features from "@/app/components/features";
 import ScrollAnimation from "../components/ScrollAnimation";
 import Image from "next/image";
+
 const Landing = () => {
   const [userId] = useState(() => {
     if (typeof window !== "undefined") {
@@ -14,61 +15,70 @@ const Landing = () => {
     }
     return null; // default value for SSR
   });
+
   return (
     <>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="h-[1000px] w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#5C1B96] via-[#5D4792] via-[#5E7E8C] via-[#7B549A] via-[#9E21AA] via-[#A5139C] to-[#C825B8]"
+        className="h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-[#5C1B96] via-[#5D4792] via-[#5E7E8C] via-[#7B549A] via-[#9E21AA] via-[#A5139C] to-[#C825B8] px-4"
       >
         {/* Header */}
-        <div className="w-full flex justify-between items-center px-8 absolute top-0 h-16">
+        <div className="w-full flex justify-between items-center px-4 sm:px-8 absolute top-0 h-16">
           <p className="text-white font-[Jaro] text-lg">LIYT</p>
-          <div className="flex space-x-6 text-white">
+          <div className="flex space-x-4 text-white text-sm sm:text-base">
             <Link href={"/Landing"}>
-              {" "}
               <p>Home</p>
             </Link>
             <Link href={"/About"}>
-              {" "}
               <p>About</p>
             </Link>
-            {userId !== null ? (
+            {userId !== null && (
               <Link href={"/Dashboard"}>
-                {" "}
                 <p>Dashboard</p>
               </Link>
-            ) : null}
+            )}
           </div>
           {userId === null ? (
             <button
-              className="text-white border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-purple-600 transition"
+              className="text-white border border-white px-3 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-white hover:text-purple-600 transition"
               onClick={() => (window.location.href = "/signup")}
             >
               Sign Up
             </button>
           ) : (
             <Link href={"/Profile"}>
-              <VscAccount className="text-white text-4xl" />
+              <VscAccount className="text-white text-2xl sm:text-4xl" />
             </Link>
           )}
         </div>
 
         {/* Main Content */}
-
-        <h1 className="text-white text-9xl font-bold text-center mt-16">
+        <motion.h1 className="text-white text-3xl sm:text-5xl md:text-7xl font-bold text-center mt-20 sm:mt-24">
           Revolutionize your delivery system
-        </h1>
-        <p className="text-white text-3xl text-center w-full mt-20">
-          Discover amazing features and learn more about us.
-        </p>
-        <Link
-          href={"/signupLanding"}
-          className="px-6 py-3 mt-8 bg-purple-600 rounded-lg text-white font-semibold hover:bg-purple-700 transition"
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-white text-lg sm:text-2xl text-center w-full max-w-2xl mt-6"
         >
-          Get Started
-        </Link>
+          Discover amazing features and learn more about us.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="flex items-center justify-center mt-5"
+        >
+          <Link
+            href={"/signupLanding"}
+            className="px-4 py-2 sm:px-6 sm:py-3 mt-6 sm:mt-8 bg-purple-600 rounded-lg text-white font-semibold hover:bg-purple-700 transition"
+          >
+            Get Started
+          </Link>
+        </motion.div>
       </motion.div>
 
       <ScrollAnimation>
@@ -76,106 +86,77 @@ const Landing = () => {
       </ScrollAnimation>
 
       <ScrollAnimation>
-        <div className="bg-white py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-[#5C1B96] via-[#5D4792] via-[#5E7E8C] via-[#7B549A] via-[#9E21AA] via-[#A5139C] to-[#C825B8]">
-          <div className="mx-auto max-w-screen-xl px-4 md:px-8">
-            <div className="mb-10 md:mb-16">
-              <h2 className="mb-4 text-center text-2xl font-bold text-white md:mb-6 lg:text-3xl">
+        <div className="bg-white py-8 px-4 sm:py-12 bg-gradient-to-br from-[#5C1B96] via-[#5D4792] via-[#5E7E8C] via-[#7B549A] via-[#9E21AA] via-[#A5139C] to-[#C825B8]">
+          <div className="mx-auto max-w-screen-xl">
+            <div className="mb-8 text-center">
+              <h2 className="mb-4 text-xl font-bold text-white sm:text-2xl lg:text-3xl">
                 Meet our Team
               </h2>
             </div>
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-y-8 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
-              <div className="flex flex-col items-center gap-2 sm:flex-row md:gap-4">
-                <div className="h-24 w-24 overflow-hidden rounded-full bg-gray-100 shadow-lg md:h-32 md:w-32">
-                  <Image
-                    src="https://images.unsplash.com/photo-1567515004624-219c11d31f2e??auto=format&q=75&fit=crop&w=256"
-                    loading="lazy"
-                    width={256}
-                    height={256}
-                    alt="Photo by Radu Florin"
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-
-                <div>
-                  <div className="text-center font-bold text-white sm:text-left md:text-lg">
-                    Asrat Efrem
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Asrat Efrem",
+                  role: "Founder / Backend Developer",
+                  img: "https://images.unsplash.com/photo-1567515004624-219c11d31f2e??auto=format&q=75&fit=crop&w=256",
+                },
+                {
+                  name: "Yitbarek Andualem",
+                  role: "Frontend Developer",
+                  img: "https://images.unsplash.com/photo-1532073150508-0c1df022bdd1?auto=format&q=75&fit=crop&w=256",
+                },
+                {
+                  name: "Leul Yohannes",
+                  role: "Frontend Developer",
+                  img: "https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&q=75&fit=crop&w=256",
+                },
+              ].map(({ name, role, img }, idx) => (
+                <div key={idx} className="flex flex-col items-center gap-4">
+                  <div className="h-24 w-24 sm:h-32 sm:w-32 rounded-full overflow-hidden bg-gray-100 shadow-lg">
+                    <Image
+                      src={img}
+                      loading="lazy"
+                      width={256}
+                      height={256}
+                      alt={`Photo of ${name}`}
+                      className="h-full w-full object-cover object-center"
+                    />
                   </div>
-                  <p className="text-center text-sm text-gray-800 sm:text-left md:text-base">
-                    Founder / Backend Developer
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center gap-2 sm:flex-row md:gap-4">
-                <div className="h-24 w-24 overflow-hidden rounded-full bg-gray-100 shadow-lg md:h-32 md:w-32">
-                  <Image
-                    src="https://images.unsplash.com/photo-1532073150508-0c1df022bdd1?auto=format&q=75&fit=crop&w=256"
-                    loading="lazy"
-                    width={256}
-                    height={256}
-                    alt="Photo by christian ferrer"
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-
-                <div>
-                  <div className="text-center font-bold text-white sm:text-left md:text-lg">
-                    Yitbarek Andualem
+                  <div>
+                    <p className="text-white font-bold text-center sm:text-left">
+                      {name}
+                    </p>
+                    <p className="text-gray-700 text-sm sm:text-base text-center sm:text-left">
+                      {role}
+                    </p>
                   </div>
-                  <p className="text-center text-sm text-gray-800 sm:text-left md:text-base">
-                    Frontend Developer
-                  </p>
                 </div>
-              </div>
-
-              <div className="flex flex-col items-center gap-2 sm:flex-row md:gap-4">
-                <div className="h-24 w-24 overflow-hidden rounded-full bg-gray-100 shadow-lg md:h-32 md:w-32">
-                  <Image
-                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&q=75&fit=crop&w=256"
-                    loading="lazy"
-                    width={156}
-                    height={156}
-                    alt="Photo by Ayo Ogunseinde"
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
-
-                <div>
-                  <div className="text-center font-bold text-white sm:text-left md:text-lg">
-                    Leul Yohannes
-                  </div>
-                  <p className="text-center text-sm text-gray-700 sm:text-left md:text-base">
-                    Frontend Developer
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </ScrollAnimation>
+
       <ScrollAnimation>
-        <div className="w-full pt-10">
-          <div className="w-full flex justify-center items-center">
-            <h1 className="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">
+        <div className="w-full py-10 px-4">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
               Why choose Liyt
             </h1>
           </div>
-          <div className="w-full flex justify-around items-center">
-            <p className="w-1/3 text-center text-gray-500 md:text-lg">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+            <p className="text-gray-500 text-center sm:text-lg max-w-lg lg:text-left">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita,
               quam! Odit tempore accusantium deleniti accusamus aliquam eaque
               omnis vero voluptatum voluptate. Omnis minima non quis sit.
-              Tempore, distinctio eius. Ex. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Voluptatum nulla quisquam eaque
-              dolorem quos nemo impedit aperiam quaerat quo, quod, quidem
-              laborum iure consectetur optio quam ab qui omnis aut.
+              Tempore, distinctio eius. Ex.
             </p>
             <Image
               src={"/img/delivery.gif"}
               alt="delivery gif"
-              width={500}
-              height={500}
+              width={400}
+              height={400}
+              className="w-64 sm:w-80 lg:w-96"
             />
           </div>
         </div>
@@ -248,6 +229,7 @@ const Landing = () => {
           </div>
         </div>
       </ScrollAnimation>
+
       <ScrollAnimation>
         <Footer />
       </ScrollAnimation>
