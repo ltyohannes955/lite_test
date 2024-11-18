@@ -16,7 +16,7 @@ const Orders = () => {
         return "Available";
       case "in_progress":
         return "Delivering";
-      case "completed":
+      case "delivered":
         return "Completed";
       default:
         return "Scheduled";
@@ -30,9 +30,8 @@ const Orders = () => {
     return null; // default value for SSR
   });
 
-
-  
   useEffect(() => {
+    console.log("User ID:", userId); // Log the userId to the console
     const fetchOrders = async () => {
       try {
         const response = await fetch("https://liyt-api-1.onrender.com/orders");
@@ -54,9 +53,8 @@ const Orders = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [userId]);
 
- 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };

@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { FaPhone } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { useRouter } from "next/navigation"; 
 import L from "leaflet";
 
 const JobDetails = () => {
@@ -33,9 +34,28 @@ const JobDetails = () => {
     customer_name: string;
     customer_phone_number: string;
     user: { first_name: string; last_name: string; phone_number: string };
-  } | null>(null); // Explicitly type jobDetails
+  } | null>(null); 
+  const router = useRouter();
   const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userId");
+    }
+    return null; // default value for SSR
+  });
+
+  const handleOrderComplete = async (orderId: number) => {
+    try {
+      await fetch(`https://liyt-api-1.onrender.com/orders/${orderId}/complete/${userId}`, { method: "GET" });
+
+      // Navigate to the Driver page after completing the order
+      router.push(`/Driver`); // Redirect to Driver page
+    } catch (error) {
+      console.error("Failed to accept job:", error);
+    }
+  };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
@@ -191,7 +211,12 @@ const JobDetails = () => {
               <p className="font-bold mt-2">Estimated Price: Birr {price}</p>
             </div>
 
-            <button className="w-full py-2 bg-purple-700 text-white font-bold rounded-lg mt-6">
+            <button className="w-full py-2 bg-purple-700 text-white font-bold rounded-lg mt-6"
+             onClick={(e) => {
+              e.stopPropagation();
+              handleOrderComplete(Number(id));
+            }}
+            >
               Order Completed
             </button>
           </div>
