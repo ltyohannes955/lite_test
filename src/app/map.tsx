@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import React, { useEffect, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -8,9 +8,16 @@ interface MapProps {
   h: number;
   destination: any;
   origin: any;
+  routeCoordinates: any;
 }
 
-const MapComponent: React.FC<MapProps> = ({ zoom, h, origin, destination }) => {
+const MapComponent: React.FC<MapProps> = ({
+  zoom,
+  h,
+  origin,
+  destination,
+  routeCoordinates,
+}) => {
   const mapRefi: any = useRef();
 
   const center = [9.010947259288999, 38.761515309323606];
@@ -27,6 +34,18 @@ const MapComponent: React.FC<MapProps> = ({ zoom, h, origin, destination }) => {
     iconAnchor: [17, 46], //[left/right, top/bottom]
     popupAnchor: [0, -46], //[left/right, top/bottom]
   });
+
+  useEffect(() => {
+    // Logic to update the map with new routeCoordinates
+    if (routeCoordinates.length > 0) {
+      drawRoute(routeCoordinates);
+    }
+  }, [routeCoordinates]);
+
+  const drawRoute = (coordinates: any) => {
+    // Implement your map library's logic to draw the route
+    console.log("Drawing route:", coordinates);
+  };
 
   return (
     <>
@@ -49,6 +68,7 @@ const MapComponent: React.FC<MapProps> = ({ zoom, h, origin, destination }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           // attribution={osm.maptiler.attribution}
         />
+        <Polyline positions={routeCoordinates} color="blue" />
       </MapContainer>
     </>
   );
