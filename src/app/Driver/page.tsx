@@ -80,8 +80,14 @@ const Orders = () => {
     setActiveTab(tab);
   };
 
-  const handleCardClick = (id: number) => {
-    setExpandedCard(expandedCard === id ? null : id);
+  const handleCardClick = (order: { id: number; status: string }) => {
+    if (order.status === "Delivering") {
+      // Navigate to JobDetails page if the order is in progress
+      router.push(`/Driver/${order.id}`);
+    } else {
+      // Expand the card if the order is not in progress
+      setExpandedCard(expandedCard === order.id ? null : order.id);
+    }
   };
 
   const handleAcceptJob = async (orderId: number) => {
@@ -105,9 +111,11 @@ const Orders = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="w-full p-4 bg-gradient-to-r from-purple-600 to-blue-400 text-white flex items-center justify-between shadow-md fixed top-0">
+      <div className="w-full p-4 bg-gradient-to-r from-purple-600 to-blue-400 text-white flex items-center shadow-md fixed top-0">
         <FiMenu size={24} className="cursor-pointer" />
-        <h1 className="text-xl font-bold flex-grow text-center">LIYT</h1>
+        <div className="flex-grow flex justify-center">
+          <img src="img/logo.png" alt="LIYT Logo" className="h-10" />
+        </div>
       </div>
 
       <div className="pt-20 p-4">
@@ -131,7 +139,7 @@ const Orders = () => {
           {filteredOrders.map((order) => (
             <div
               key={order.id}
-              onClick={() => handleCardClick(order.id)}
+              onClick={() => handleCardClick(order)} // Pass the entire order object
               className="bg-white shadow-md p-4 rounded-lg cursor-pointer"
             >
               <div className="flex justify-between items-center">

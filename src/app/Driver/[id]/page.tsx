@@ -165,7 +165,7 @@ const JobDetails = () => {
     <div className="relative min-h-screen">
       <div className="w-full p-4 bg-gradient-to-r from-purple-600 to-blue-400 text-white flex items-center justify-between shadow-md fixed top-0 z-20">
         <FiMenu size={24} className="cursor-pointer" />
-        <h1 className="text-xl font-bold flex-grow text-center">LIYT</h1>
+        <img src="img/logo.png" alt="LIYT Logo" className="h-10" />
       </div>
 
       <div className="absolute inset-0 z-10">
