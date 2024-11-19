@@ -243,97 +243,92 @@ const Orders = () => {
                         {/* <label className="block text-gray-700">
                           Recipient Phone NO:
                         </label> */}
-
-                          <input
-                            type="text"
-                            name="customer_phone_number"
-                            value={formData.customer_phone_number}
-                            className="w-full p-2 border rounded"
-                            placeholder="Receiver's Phone Number"
-                            onChange={handleChange}
-                          />
-                        </div>
-                        <div className="relative mb-4">
-                          <input
-                            type="text"
-                            placeholder="Pick Up Address"
-                            className="w-full p-3 border border-gray-300 rounded-md"
-                            value={pickUpInput}
-                            onChange={(e) => setPickUpInput(e.target.value)}
-                          />
-                          <button
-                            type="button"
-                            onClick={() =>
-                              fetchLocationSuggestions(pickUpInput, "primary")
-                            }
-                            className="absolute inset-y-0 right-3 flex items-center"
-                          >
-                            <FaSearch className="text-gray-500" />
-                          </button>
-                          {Array.isArray(pickUp) && pickUp.length > 0 ? (
-                            <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
-                              {pickUp.map((location: any, index) => (
-                                <li
-                                  key={index}
-                                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                                  onClick={() =>
-                                    handleLocationSelect(location, "primary")
-                                  }
-                                >
-                                  {location.name} - {location.City},{" "}
-                                  {location.Country}
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            hasSearched && ( // Only show message if a search has been attempted
-                              <p className="text-red-500">
-                                The location you are trying to set does not
-                                exist. Please try again.
-                              </p>
-                            )
-                          )}
-                        </div>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="Drop Of Address"
-                            className="w-full p-3 border border-gray-300 rounded-md"
-                            value={dropOffInput}
-                            onChange={(e) => setDropOffInput(e.target.value)}
-                          />
-                          <button
-                            type="button"
-                            onClick={() =>
-                              fetchLocationSuggestions(
-                                dropOffInput,
-                                "secondary"
-                              )
-                            }
-                            className="absolute inset-y-0 right-3 flex items-center"
-                          >
-                            <FaSearch className="text-gray-500" />
-                          </button>
-                          {dropOff.length > 0 && (
-                             <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
-                              {dropOff.map((location: any, index) => (
-                                <li
-                                  key={index}
-                                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                                  onClick={() =>
-                                    handleLocationSelect(location, "secondary")
-                                  }
-                                >
-                                  {location.name} - {location.City},
-                                  {location.Country}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                        <div className="flex justify-between w-full mt-4">
-                          <div>Price: {price ? `${price}birr` : "N/A"}</div>
-                        </div>
+                        <input
+                          type="text"
+                          name="customer_phone_number"
+                          value={formData.customer_phone_number}
+                          className="w-full p-2 border rounded"
+                          placeholder="Receiver's Phone Number"
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="relative mb-4">
+                        <input
+                          type="text"
+                          placeholder="Pick Up Address"
+                          className="w-full p-3 border border-gray-300 rounded-md"
+                          value={pickUpInput}
+                          onChange={(e) => setPickUpInput(e.target.value)}
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            fetchLocationSuggestions(pickUpInput, "primary")
+                          }
+                          className="absolute inset-y-0 right-3 flex items-center"
+                        >
+                          <FaSearch className="text-gray-500" />
+                        </button>
+                        {Array.isArray(pickUp) && pickUp.length > 0 ? (
+                          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
+                            {pickUp.map((location: any, index) => (
+                              <li
+                                key={index}
+                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                onClick={() =>
+                                  handleLocationSelect(location, "primary")
+                                }
+                              >
+                                {location.name} - {location.City},{" "}
+                                {location.Country}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          hasSearched && ( // Only show message if a search has been attempted
+                            <p className="text-red-500">
+                              The location you are trying to set does not exist.
+                              Please try again.
+                            </p>
+                          )
+                        )}
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Drop Of Address"
+                          className="w-full p-3 border border-gray-300 rounded-md"
+                          value={dropOffInput}
+                          onChange={(e) => setDropOffInput(e.target.value)}
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            fetchLocationSuggestions(dropOffInput, "secondary")
+                          }
+                          className="absolute inset-y-0 right-3 flex items-center"
+                        >
+                          <FaSearch className="text-gray-500" />
+                        </button>
+                        {dropOff.length > 0 && (
+                          <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
+                            {dropOff.map((location: any, index) => (
+                              <li
+                                key={index}
+                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                onClick={() =>
+                                  handleLocationSelect(location, "secondary")
+                                }
+                              >
+                                {location.name} - {location.City},
+                                {location.Country}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      <div className="flex justify-between w-full mt-4">
+                        <div>Price: {price ? `${price}birr` : "N/A"}</div>
                       </div>
                     </div>
                   </div>
