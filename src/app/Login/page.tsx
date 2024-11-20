@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://liytapi.fenads.org/login", {
+      const response = await fetch("https://liytapi.fenads.org/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

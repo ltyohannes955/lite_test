@@ -14,6 +14,7 @@ import { FiMenu } from "react-icons/fi";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import L from "leaflet";
+import Image from "next/image";
 
 const JobDetails = () => {
   const params = useParams(); // Dynamically access `params`
@@ -55,7 +56,7 @@ const JobDetails = () => {
   const handleOrderComplete = async (orderId: number) => {
     try {
       await fetch(
-        `http://liytapi.fenads.org/orders/${orderId}/complete/${userId}`,
+        `https://liytapi.fenads.org/orders/${orderId}/complete/${userId}`,
         { method: "GET" }
       );
 
@@ -70,7 +71,7 @@ const JobDetails = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://liytapi.fenads.org/orders/${id}`)
+      fetch(`https://liytapi.fenads.org/orders/${id}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -94,7 +95,7 @@ const JobDetails = () => {
     if (origin && destination) {
       try {
         const response = await fetch(
-          `http://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
+          `https://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
         );
         const data = await response.json();
         setRouteCoordinates(data.payload.directions);
@@ -165,7 +166,13 @@ const JobDetails = () => {
     <div className="relative min-h-screen">
       <div className="w-full p-4 bg-gradient-to-r from-purple-600 to-blue-400 text-white flex items-center justify-between shadow-md fixed top-0 z-20">
         <FiMenu size={24} className="cursor-pointer" />
-        <img src="img/logo.png" alt="LIYT Logo" className="h-10" />
+        <Image
+          src="/img/logo.png"
+          alt="LIYT Logo"
+          className="h-10"
+          width={100}
+          height={100}
+        />
       </div>
 
       <div className="absolute inset-0 z-10">

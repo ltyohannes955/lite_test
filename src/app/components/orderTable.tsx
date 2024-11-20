@@ -8,23 +8,33 @@ import {
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import Image from "next/image";
+import { IoMdArchive } from "react-icons/io";
+
 const OrderTable = () => {
-  const [orders, setOrders] = useState([]); // State for orders data
+  const [orders, setOrders] = React.useState<any[]>([]); // Ensure `orders` is an array
   const [loading, setLoading] = useState(true); // Loading state
   const [searchId, setSearchId] = useState(""); // Search input state
   const [filterStatus, setFilterStatus] = useState(""); // Status filter state
   const [currentPage, setCurrentPage] = useState(1); // Current page state
   const [ordersPerPage] = useState(5); // Items per page state
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userId");
+    }
+    return null; // Default value for SSR
+  });
 
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://liytapi.fenads.org/orders");
+      const response = await fetch(
+        `https://liytapi.fenads.org/users/${userId}/orders`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
       const data = await response.json();
-      setOrders(data); // Update orders state with fetched data
+      setOrders(Array.isArray(data) ? data : []);
     } catch (err: any) {
       console.log(err);
     } finally {
@@ -37,12 +47,14 @@ const OrderTable = () => {
   }, []);
 
   // Filtered orders based on search and filter inputs
-  const filteredOrders = orders.filter((order: any) => {
-    const matchesId = order.id.toString().includes(searchId);
-    const matchesStatus =
-      filterStatus === "" || order.status.toLowerCase() === filterStatus;
-    return matchesId && matchesStatus;
-  });
+  const filteredOrders = Array.isArray(orders)
+    ? orders.filter((order: any) => {
+        const matchesId = order.id.toString().includes(searchId);
+        const matchesStatus =
+          filterStatus === "" || order.status.toLowerCase() === filterStatus;
+        return matchesId && matchesStatus;
+      })
+    : [];
 
   // Pagination logic: get the orders to display for the current page
   const startIndex = (currentPage - 1) * ordersPerPage;
@@ -115,34 +127,45 @@ const OrderTable = () => {
         </>
       ) : (
         <>
-          <MantineProvider>
-            <div>
-              <Table verticalSpacing="sm" withTableBorder striped>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Order Id</Table.Th>
-                    <Table.Th>Customer</Table.Th>
-                    <Table.Th>Origin</Table.Th>
-                    <Table.Th>Destination</Table.Th>
-                    <Table.Th>Price</Table.Th>
-                    <Table.Th>Status</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-              </Table>
-
-              {/* Pagination Component */}
-              <div className="mt-4 flex justify-center">
-                <Pagination
-                  value={currentPage} // Use 'value' instead of 'page'
-                  onChange={setCurrentPage}
-                  total={totalPages}
-                  boundaries={1}
-                  siblings={1}
-                />
+          {filteredOrders.length === 0 ? (
+            <>
+              <div className="w-full flex justify-center items-center ">
+                <p className="text-center text-xl text-gray-500 ml-5">
+                  No Orders{" "}
+                </p>
+                <IoMdArchive className="text-gray-500 text-2xl ml-4" />
               </div>
-            </div>
-          </MantineProvider>
+            </>
+          ) : (
+            <MantineProvider>
+              <div>
+                <Table verticalSpacing="sm" withTableBorder striped>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>Order Id</Table.Th>
+                      <Table.Th>Customer</Table.Th>
+                      <Table.Th>Origin</Table.Th>
+                      <Table.Th>Destination</Table.Th>
+                      <Table.Th>Price</Table.Th>
+                      <Table.Th>Status</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
+
+                {/* Pagination Component */}
+                <div className="mt-4 flex justify-center">
+                  <Pagination
+                    value={currentPage} // Use 'value' instead of 'page'
+                    onChange={setCurrentPage}
+                    total={totalPages}
+                    boundaries={1}
+                    siblings={1}
+                  />
+                </div>
+              </div>
+            </MantineProvider>
+          )}
         </>
       )}
     </>
