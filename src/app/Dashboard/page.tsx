@@ -6,6 +6,7 @@ import { FaSearch } from "react-icons/fa";
 import Footer from "../Footer/page";
 import OrderTable from "../components/orderTable";
 
+
 const Map = dynamic(() => import("../map"), { ssr: false });
 
 const Orders = () => {
@@ -19,6 +20,8 @@ const Orders = () => {
   const [destinationLon, setDestinationLon] = useState("");
   const [price, setPrice] = useState<number | null>(null);
   const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]);
+  const [pickUpName, setPickUpName] = useState("");
+  const [dropOffName, setDropOffName] = useState("");
 
   const [userId] = useState(() => {
     if (typeof window !== "undefined") {
@@ -36,6 +39,8 @@ const Orders = () => {
     price: 0,
     customer_name: "",
     customer_phone_number: "",
+    origin_name: pickUpName,
+    destination_name: dropOffName,
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,7 +57,7 @@ const Orders = () => {
   const fetchLocationSuggestions = async (query: string, type: string) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/location/${query}`
+        `https://liytapi.fenads.org/location/${query}`
       );
       const data = await response.json();
       if (type === "primary") {
@@ -83,7 +88,7 @@ const Orders = () => {
     if (origin && destination) {
       try {
         const response = await fetch(
-          `http://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
+          `https://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
         );
         const data = await response.json();
         setRouteCoordinates(data.payload.directions);
@@ -98,7 +103,7 @@ const Orders = () => {
       alert("Please calculate the price first.");
     } else {
       try {
-        const response = await fetch("http://liytapi.fenads.org/orders", {
+        const response = await fetch("https://liytapi.fenads.org/orders", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -126,7 +131,7 @@ const Orders = () => {
   ) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
+        `https://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
       );
       const data = await response.json();
       setPrice(data.payload.total_price);
@@ -143,16 +148,15 @@ const Orders = () => {
     }
   };
 
-  const handleLocationSelect = (
-    location: any,
-    type: "primary" | "secondary"
-  ) => {
+  const handleLocationSelect = (location: any, type: "primary" | "secondary") => {
     const { latitude, longitude, name } = location;
     if (type === "primary") {
       setPickUpInput(name);
       setPickUp([]);
       setOriginLat(latitude);
       setOriginLon(longitude);
+      setPickUpName(name);
+      console.log("Pickup Location Name:", name);
       if (destinationLat && destinationLon) {
         handlePriceCalculation(
           latitude,
@@ -170,6 +174,8 @@ const Orders = () => {
       setDropOff([]);
       setDestinationLat(latitude);
       setDestinationLon(longitude);
+      setDropOffName(name);
+      console.log("Drop-off Location Name:", name);
       if (originLat && originLon) {
         handlePriceCalculation(originLat, originLon, latitude, longitude);
       }
@@ -183,6 +189,8 @@ const Orders = () => {
   return (
     <>
       <Header />
+   
+
       <div className="bg-white w-full h-[700px] p-6">
         <div className="flex justify-between items-center mb-4 w-full">
           <h1 className="text-2xl font-bold">Orders Details</h1>

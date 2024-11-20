@@ -16,10 +16,17 @@ const OrderTable = () => {
   const [currentPage, setCurrentPage] = useState(1); // Current page state
   const [ordersPerPage] = useState(5); // Items per page state
 
+  const [userId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("userId");
+    }
+    return null; // Default value for SSR
+  });
+
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://liytapi.fenads.org/orders");
+      const response = await fetch(`https://liytapi.fenads.org/users/${userId}/orders`);
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
@@ -67,8 +74,8 @@ const OrderTable = () => {
     <Table.Tr key={order.id}>
       <Table.Td>{order.id}</Table.Td>
       <Table.Td>{order.customer_name}</Table.Td>
-      <Table.Td>{order.origin}</Table.Td>
-      <Table.Td>{order.destination}</Table.Td>
+      <Table.Td>{order.origin_name || order.origin}</Table.Td>
+      <Table.Td>{order.destination_name || order.destination}</Table.Td>
       <Table.Td>{order.price}</Table.Td>
       <Table.Td style={getStatusStyle(order.status)}>{order.status}</Table.Td>
     </Table.Tr>
