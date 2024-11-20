@@ -34,7 +34,7 @@ const Landing = () => {
             height={100}
           />
           <div className="flex space-x-4 text-white text-sm sm:text-base">
-            <Link href={"/Landing"}>
+            <Link href={"/"}>
               <p>Home</p>
             </Link>
             <Link href={"/About"}>

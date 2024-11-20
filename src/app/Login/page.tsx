@@ -40,7 +40,7 @@ const Login = () => {
           // Store token and user ID in localStorage
           localStorage.setItem("authToken", token);
           localStorage.setItem("userId", user.id);
-          router.push("/Landing");
+          router.push("/");
         }
       } else {
         const errorData = await response.json();

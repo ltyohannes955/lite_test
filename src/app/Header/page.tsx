@@ -37,7 +37,7 @@ const Header = () => {
                 </Link>
                 <Link href={"/Development"}>
                   {" "}
-                  <p>Development</p>
+                  <p>Developers</p>
                 </Link>
               </>
             ) : null}
