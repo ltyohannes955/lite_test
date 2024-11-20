@@ -23,7 +23,7 @@ const Header = () => {
             height={100}
           />
           <div className="flex space-x-6 text-white">
-            <Link href="/Landing">
+            <Link href="/">
               <p>Home</p>
             </Link>
             <Link href="/About">

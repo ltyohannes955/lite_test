@@ -182,9 +182,14 @@ const Apikey = () => {
             </>
           ) : apiKeyData.length === 0 ? (
             <>
-              <div className="w-full flex justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+                className="w-full flex justify-center"
+              >
                 <p className="text-center text-gray-500">No Api Key created </p>
-              </div>
+              </motion.div>
             </>
           ) : (
             <motion.div
