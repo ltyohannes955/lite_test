@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { IoMdDocument, IoMdLock, IoMdHome } from "react-icons/io";
 import { MdDashboard, MdOutlineLogout } from "react-icons/md";
 import { MantineProvider } from "@mantine/core";
-import ApiKey from "./apikey/apikey";
+import ApiKey from "@/app/Development/apikey/apikey";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Dashboard from "./Dash/dash";
@@ -37,7 +37,11 @@ const Page = () => {
   const renderContent = () => {
     switch (active) {
       case "Dashboard":
-        return <div><Dashboard /></div>;
+        return (
+          <div>
+            <Dashboard />
+          </div>
+        );
       case "ApiKey":
         return (
           <div>
