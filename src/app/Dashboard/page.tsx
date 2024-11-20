@@ -52,7 +52,7 @@ const Orders = () => {
   const fetchLocationSuggestions = async (query: string, type: string) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/location/${query}`
+        `https://liytapi.fenads.org/location/${query}`
       );
       const data = await response.json();
       if (type === "primary") {
@@ -83,7 +83,7 @@ const Orders = () => {
     if (origin && destination) {
       try {
         const response = await fetch(
-          `http://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
+          `https://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
         );
         const data = await response.json();
         setRouteCoordinates(data.payload.directions);
@@ -98,7 +98,7 @@ const Orders = () => {
       alert("Please calculate the price first.");
     } else {
       try {
-        const response = await fetch("http://liytapi.fenads.org/orders", {
+        const response = await fetch("https://liytapi.fenads.org/orders", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const Orders = () => {
   ) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
+        `https://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
       );
       const data = await response.json();
       setPrice(data.payload.total_price);

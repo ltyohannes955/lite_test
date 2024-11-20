@@ -49,7 +49,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch("http://liytapi.fenads.org/signup", {
+      const response = await fetch("https://liytapi.fenads.org/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
