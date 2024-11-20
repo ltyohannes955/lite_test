@@ -7,6 +7,7 @@ import { MantineProvider } from "@mantine/core";
 import ApiKey from "./apikey/apikey";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Dashboard from "./Dash/dash";
 
 const Page = () => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const Page = () => {
   const renderContent = () => {
     switch (active) {
       case "Dashboard":
-        return <div>Welcome to the Dashboard</div>;
+        return <div><Dashboard /></div>;
       case "ApiKey":
         return (
           <div>
