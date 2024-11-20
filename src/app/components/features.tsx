@@ -38,11 +38,11 @@ const features = () => {
 
               <div>
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Growth
+                  Tracking
                 </h3>
                 <p className="mb-2 text-gray-500">
-                  Filler text is dummy text which has no meaning however looks
-                  very similar to real text.
+                  LIYT provides real-time tracking for your packages, ensuring
+                  you stay updated every step of the way.
                 </p>
                 <a
                   href="#"
@@ -73,11 +73,11 @@ const features = () => {
 
               <div>
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Security
+                  Reliability
                 </h3>
                 <p className="mb-2 text-gray-500">
-                  Filler text is dummy text which has no meaning however looks
-                  very similar to real text.
+                  LIYT ensures dependable deliveries with advanced technology
+                  and robust logistics support.
                 </p>
                 <a
                   href="#"
@@ -107,10 +107,12 @@ const features = () => {
               </div>
 
               <div>
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">Cloud</h3>
+                <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                  Automation
+                </h3>
                 <p className="mb-2 text-gray-500">
-                  Filler text is dummy text which has no meaning however looks
-                  very similar to real text.
+                  LIYT uses automated systems to streamline the delivery
+                  process, saving time and reducing errors.
                 </p>
                 <a
                   href="#"
@@ -140,10 +142,12 @@ const features = () => {
               </div>
 
               <div>
-                <h3 className="mb-2 text-lg font-semibold md:text-xl">Speed</h3>
+                <h3 className="mb-2 text-lg font-semibold md:text-xl">
+                  Integration
+                </h3>
                 <p className="mb-2 text-gray-500">
-                  Filler text is dummy text which has no meaning however looks
-                  very similar to real text.
+                  LIYT seamlessly integrates with your existing systems for a
+                  hassle-free delivery experience.
                 </p>
                 <a
                   href="#"
@@ -174,11 +178,11 @@ const features = () => {
 
               <div>
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Support
+                  Developer Tools
                 </h3>
                 <p className="mb-2 text-gray-500">
-                  Filler text is dummy text which has no meaning however looks
-                  very similar to real text.
+                  LIYT offers an API for developers to easily integrate and
+                  utilize our services within their own applications.
                 </p>
                 <a
                   href="#"
@@ -209,11 +213,11 @@ const features = () => {
 
               <div>
                 <h3 className="mb-2 text-lg font-semibold md:text-xl">
-                  Dark Mode
+                  User Interface
                 </h3>
                 <p className="mb-2 text-gray-500">
-                  Filler text is dummy text which has no meaning however looks
-                  very similar to real text.
+                  LIYT features an intuitive and easy-to-navigate interface,
+                  enhancing user experience.
                 </p>
                 <a
                   href="#"
