@@ -38,7 +38,7 @@ const SignUp = () => {
   const fetchLocationSuggestions = async (query: any, type: any) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/location/${query}`
+        `https://liytapi.fenads.org/location/${query}`
       );
       const data = await response.json();
       if (type === "primary") {
@@ -87,7 +87,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch("http://liytapi.fenads.org/signup", {
+      const response = await fetch("https://liytapi.fenads.org/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -322,7 +322,7 @@ const SignUp = () => {
                     <FaSearch className="text-gray-500" />
                   </button>
                   {primarySuggestions.length > 0 && (
-                     <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
+                    <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
                       {primarySuggestions.map((location: any, index) => (
                         <li
                           key={index}
@@ -360,7 +360,7 @@ const SignUp = () => {
                     <FaSearch className="text-gray-500" />
                   </button>
                   {secondarySuggestions.length > 0 && (
-                     <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
+                    <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
                       {secondarySuggestions.map((location: any, index) => (
                         <li
                           key={index}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter
 import { FiMenu } from "react-icons/fi";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import Image from "next/image";
 
 const Orders = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -45,7 +46,7 @@ const Orders = () => {
     console.log("User ID:", userId); // Log the userId to the console
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://liytapi.fenads.org/orders");
+        const response = await fetch("https://liytapi.fenads.org/orders");
         const data = await response.json();
         const formattedOrders = data.map(
           (order: {
@@ -93,7 +94,7 @@ const Orders = () => {
   const handleAcceptJob = async (orderId: number) => {
     try {
       await fetch(
-        `http://liytapi.fenads.org/orders/${orderId}/accept/${userId}`,
+        `https://liytapi.fenads.org/orders/${orderId}/accept/${userId}`,
         { method: "GET" }
       );
 
@@ -114,7 +115,13 @@ const Orders = () => {
       <div className="w-full p-4 bg-gradient-to-r from-purple-600 to-blue-400 text-white flex items-center shadow-md fixed top-0">
         <FiMenu size={24} className="cursor-pointer" />
         <div className="flex-grow flex justify-center">
-          <img src="img/logo.png" alt="LIYT Logo" className="h-10" />
+          <Image
+            src="/img/logo.png"
+            alt="LIYT Logo"
+            className="h-10"
+            width={100}
+            height={100}
+          />
         </div>
       </div>
 

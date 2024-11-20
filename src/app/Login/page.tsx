@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://liytapi.fenads.org/login", {
+      const response = await fetch("https://liytapi.fenads.org/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Login = () => {
           // Store token and user ID in localStorage
           localStorage.setItem("authToken", token);
           localStorage.setItem("userId", user.id);
-          router.push("/Landing");
+          router.push("/");
         }
       } else {
         const errorData = await response.json();
