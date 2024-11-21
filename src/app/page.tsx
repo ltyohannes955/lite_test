@@ -55,7 +55,7 @@ export default function Home() {
           {userId === null ? (
             <button
               className="text-white border border-white px-3 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-white hover:text-purple-600 transition"
-              onClick={() => (window.location.href = "/signup")}
+              onClick={() => (window.location.href = "/signupLanding")}
             >
               Sign Up
             </button>

@@ -1,14 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { FaSearch } from "react-icons/fa";
 
 const Map = dynamic(() => import("../../map"), { ssr: false });
 
 const CreateOrderPage = () => {
-  const [pickUp, setPickUp] = useState([]);
   const [dropOff, setDropOff] = useState([]);
-  const [pickUpInput, setPickUpInput] = useState("");
   const [dropOffInput, setDropOffInput] = useState("");
   const [originLat, setOriginLat] = useState("");
   const [originLon, setOriginLon] = useState("");
@@ -17,23 +15,35 @@ const CreateOrderPage = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]);
 
-  const [userId] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("userId");
-    }
-    return null; // Default value for SSR
-  });
-
   const [formData, setFormData] = useState({
-    user_id: userId,
-    driver_id: "",
-    status: "pending",
-    origin: `${originLat},${originLon}`,
     destination: `${destinationLat},${destinationLon}`,
     price: 0,
     customer_name: "",
     customer_phone_number: "",
   });
+
+  const fetchOrders = async () => {
+    const url = window.location.href; // Gets the current URL
+    const id = url.split("/").pop();
+    try {
+      const response = await fetch(`https://liytapi.fenads.org/orders/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+      const data = await response.json();
+      const [latitude, longitude] = data.origin.split(",");
+      console.log("latitude:", latitude, "longitude:", longitude);
+      setOriginLat(latitude);
+      setOriginLon(longitude);
+    } catch (err: any) {
+      console.log(err);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,13 +56,25 @@ const CreateOrderPage = () => {
   const fetchLocationSuggestions = async (query: string, type: string) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/location/${query}`
+        `https://liytapi.fenads.org/location/${query}`
       );
       const data = await response.json();
       if (type === "primary") {
-        setPickUp(data.payload.data || []);
+        if (data.payload.data && data.payload.data.length > 0) {
+        } else {
+          alert(
+            "The location you are trying to set does not exist. Please try again."
+          ); // Show alert
+        }
       } else {
-        setDropOff(data.payload.data || []);
+        if (data.payload.data && data.payload.data.length > 0) {
+          setDropOff(data.payload.data);
+        } else {
+          setDropOff([]); // Clear dropOff if no data
+          alert(
+            "The location you are trying to set does not exist. Please try again."
+          ); // Show alert
+        }
       }
     } catch (error) {
       console.error("Failed to fetch location suggestions", error);
@@ -63,7 +85,7 @@ const CreateOrderPage = () => {
     if (origin && destination) {
       try {
         const response = await fetch(
-          `http://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
+          `https://liytapi.fenads.org/orders/get_price?origin=${origin}&destination=${destination}`
         );
         const data = await response.json();
         setRouteCoordinates(data.payload.directions);
@@ -74,26 +96,37 @@ const CreateOrderPage = () => {
   };
 
   const handleSubmit = async () => {
+    const url = window.location.href; // Gets the current URL
+    const id = url.split("/").pop(); // Extracts the ID (assumes ID is at the end of the URL)
+
+    // console.log("ID:", id);
     if (price === null) {
       alert("Please calculate the price first.");
     } else {
       try {
-        const response = await fetch("http://liytapi.fenads.org/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        const response = await fetch(
+          `https://liytapi.fenads.org/orders/${id}`,
+          {
+            method: "PATCH", // Use PUT for full updates, PATCH for partial updates
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ order: formData }), // Include the updated formData
+          }
+        );
 
         if (response.ok) {
-          alert("Order created successfully!");
+          alert("Order updated successfully!");
         } else {
           const errorData = await response.json();
           console.error(errorData);
+          alert(
+            `Failed to update order: ${errorData.message || "Unknown error"}`
+          );
         }
       } catch (error) {
-        console.error("Order creation error:", error);
+        console.error("Order update error:", error);
+        alert("An error occurred while updating the order. Please try again.");
       }
     }
   };
@@ -106,7 +139,7 @@ const CreateOrderPage = () => {
   ) => {
     try {
       const response = await fetch(
-        `http://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
+        `https://liytapi.fenads.org/orders/get_price?origin=${originLat},${originLon}&destination=${destinationLat},${destinationLon}`
       );
       const data = await response.json();
       setPrice(data.payload.total_price);
@@ -129,8 +162,6 @@ const CreateOrderPage = () => {
   ) => {
     const { latitude, longitude, name } = location;
     if (type === "primary") {
-      setPickUpInput(name);
-      setPickUp([]);
       setOriginLat(latitude);
       setOriginLon(longitude);
       if (destinationLat && destinationLon) {
@@ -199,39 +230,7 @@ const CreateOrderPage = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="relative mb-4">
-                <input
-                  type="text"
-                  placeholder="Pick Up Address"
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  value={pickUpInput}
-                  onChange={(e) => setPickUpInput(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() =>
-                    fetchLocationSuggestions(pickUpInput, "primary")
-                  }
-                  className="absolute inset-y-0 right-3 flex items-center"
-                >
-                  <FaSearch className="text-gray-500" />
-                </button>
-                {Array.isArray(pickUp) && pickUp.length > 0 && (
-                  <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto">
-                    {pickUp.map((location: any, index) => (
-                      <li
-                        key={index}
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() =>
-                          handleLocationSelect(location, "primary")
-                        }
-                      >
-                        {location.name} - {location.City}, {location.Country}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+
               <div className="relative">
                 <input
                   type="text"

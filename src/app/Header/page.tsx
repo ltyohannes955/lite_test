@@ -45,7 +45,7 @@ const Header = () => {
           {userId === null ? (
             <button
               className="text-white border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-purple-600 transition"
-              onClick={() => (window.location.href = "/signup")}
+              onClick={() => (window.location.href = "/signupLanding")}
             >
               Sign Up
             </button>
