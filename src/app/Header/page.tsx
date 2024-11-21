@@ -39,6 +39,10 @@ const Header = () => {
                   {" "}
                   <p>Developers</p>
                 </Link>
+                <Link href={"/Driver"}>
+                  {" "}
+                  <p>Driver</p>
+                </Link>
               </>
             ) : null}
           </div>

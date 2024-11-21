@@ -49,6 +49,10 @@ export default function Home() {
                   {" "}
                   <p>Developers</p>
                 </Link>
+                <Link href={"/Driver"}>
+                  {" "}
+                  <p>Driver</p>
+                </Link>
               </>
             )}
           </div>
